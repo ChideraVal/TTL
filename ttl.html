@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TTL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg1:#05060a;
+  --bg2:#0b1020;
+  --card:rgba(255,255,255,0.06);
+  --stroke:rgba(255,255,255,0.1);
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#7c3aed;
+  --accent2:#22c55e;
+  --danger:#ef4444;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,system-ui,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  overflow:hidden;
+  background: radial-gradient(circle at top, #1a0b2e, var(--bg1), #000);
+  color:var(--text);
+}
+
+.bg-glow{
+  position:absolute;
+  width:600px;
+  height:600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.25), transparent 60%);
+  top:-200px;
+  left:-200px;
+  filter:blur(60px);
+  animation: float 8s ease-in-out infinite;
+}
+
+.bg-glow2{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 60%);
+  bottom:-200px;
+  right:-200px;
+  filter:blur(60px);
+  animation: float 10s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(30px)}
+}
+
+.app{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.brand{
+  position:absolute;
+  top:20px;
+  left:0;
+  right:0;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:2px;
+  opacity:0.75;
+  user-select:none;
+}
+
+.screen{
+  width:100%;
+  max-width:420px;
+  display:none;
+  animation: fade 0.35s ease;
+}
+
+.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(10px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--stroke);
+  border-radius:24px;
+  padding:20px;
+  backdrop-filter: blur(18px);
+  box-shadow:0 30px 80px rgba(0,0,0,0.6);
+}
+
+.title{
+  font-size:34px;
+  font-weight:800;
+  text-align:center;
+  letter-spacing:-1.5px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-top:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.story-title{
+  font-size:22px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:12px;
+  letter-spacing:-0.6px;
+}
+
+.step-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid rgba(124,58,237,0.35);
+  background:rgba(124,58,237,0.12);
+  color:#ddd6fe;
+  font-size:12px;
+  font-weight:700;
+  margin:0 auto 14px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:10px;
+  transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+
+button:hover{ transform:translateY(-1px); }
+button:active{ transform:translateY(0); opacity:.92; }
+
+.primary{
+  background:linear-gradient(135deg,var(--accent),#4f46e5);
+  color:white;
+  box-shadow:0 14px 30px rgba(124,58,237,0.22);
+}
+
+.secondary{
+  background:rgba(255,255,255,0.06);
+  color:var(--text);
+  border:1px solid var(--stroke);
+}
+
+input{
+  width:100%;
+  padding:14px 15px;
+  margin-top:10px;
+  border-radius:16px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  outline:none;
+  transition:border-color .18s ease, transform .18s ease, background .18s ease;
+}
+
+input::placeholder{ color:#8b93a7; }
+input:focus{
+  border-color:rgba(124,58,237,0.7);
+  background:rgba(255,255,255,0.05);
+}
+
+.option{
+  padding:14px;
+  margin:10px 0;
+  border-radius:16px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--stroke);
+  cursor:pointer;
+  transition:0.2s;
+  line-height:1.45;
+}
+
+.option:hover{
+  transform:scale(1.02);
+  border-color:rgba(124,58,237,0.6);
+}
+
+.option.correct{
+  border-color:rgba(34,197,94,0.95);
+  background:rgba(34,197,94,0.14);
+}
+
+.option.wrong{
+  border-color:rgba(239,68,68,0.95);
+  background:rgba(239,68,68,0.14);
+}
+
+.result{
+  text-align:center;
+  margin-top:16px;
+  font-weight:700;
+  min-height:24px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  margin-top:10px;
+  font-size:13px;
+}
+
+.good{background:rgba(34,197,94,0.15); color:#22c55e;}
+.bad{background:rgba(239,68,68,0.15); color:#fca5a5;}
+
+.share{
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--stroke);
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+  word-break:break-all;
+  line-height:1.5;
+}
+
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:12px;
+}
+
+.hidden{display:none;}
+
+.divider{
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  margin:16px 0;
+}
+
+.answer-meta{
+  margin-top:14px;
+  padding:14px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  border:1px solid var(--stroke);
+}
+
+.answer-meta-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:10px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.answer-meta-title{
+  font-size:18px;
+  font-weight:800;
+  line-height:1.35;
+  margin-bottom:12px;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<div class="brand">TTL</div>
+
+<div class="app">
+
+  <!-- CREATE SCREEN -->
+  <div id="createScreen" class="screen active">
+    <div class="card">
+      <div class="title">Expose the Lie 😈</div>
+      <div class="subtitle">Create a challenge in seconds and send it to friends. When they answer, they can make their own right after.</div>
+
+      <div class="divider"></div>
+
+      <div class="step-chip">Step 1 · Write your challenge</div>
+
+      <input id="t1" placeholder="Truth #1">
+      <input id="t2" placeholder="Truth #2">
+      <input id="l1" placeholder="Your lie 😏">
+
+      <button class="primary" onclick="generate()">Generate Challenge</button>
+
+      <div id="shareBox" class="share hidden"></div>
+      <div class="footer">No login • Instant share • WhatsApp ready</div>
+    </div>
+  </div>
+
+  <!-- PLAY SCREEN -->
+  <div id="playScreen" class="screen">
+    <div class="card">
+      <div class="story-title">Can you spot the lie?</div>
+      <div class="subtitle">Tap the statement you think is false. You can keep trying as many times as you want.</div>
+
+      <div class="answer-meta">
+        <div class="answer-meta-label">Challenge</div>
+        <div class="answer-meta-title">Which one is the lie?</div>
+        <div id="options"></div>
+      </div>
+
+      <div id="result" class="result"></div>
+
+      <div id="afterPlayActions" class="hidden">
+        <div class="divider"></div>
+        <button class="primary" onclick="backToCreate()">Create Your Own Challenge</button>
+        <button class="secondary" onclick="playAgain()">Play Another</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function encode(d){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(d))));
+}
+
+function decode(d){
+  return JSON.parse(decodeURIComponent(escape(atob(d))));
+}
+
+const state = {
+  currentAnswer: null,
+  latestShareUrl: "",
+  optionMap: new Map(),
+  optionsNode: null,
+  resultNode: null,
+  afterPlayNode: null
+};
+
+function go(screenId){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function generate(){
+  const t1 = document.getElementById('t1').value.trim();
+  const t2 = document.getElementById('t2').value.trim();
+  const l1 = document.getElementById('l1').value.trim();
+
+  if(!t1 || !t2 || !l1){
+    alert('Please fill all fields');
+    return;
+  }
+
+  const data = { t1, t2, l1 };
+  const encoded = encode(data);
+  const url = location.origin + location.pathname + '#data=' + encoded;
+  state.latestShareUrl = url;
+
+  const shareBox = document.getElementById('shareBox');
+  shareBox.classList.remove('hidden');
+  shareBox.innerHTML = `
+    <div class="small" style="margin-bottom:10px;">Share this challenge</div>
+    <div class="small">${url}</div>
+    <button class="secondary" onclick="copyLink()">Copy Link</button>
+  `;
+}
+
+async function copyLink(){
+  try{
+    await navigator.clipboard.writeText(state.latestShareUrl);
+    alert('Copied!');
+  }catch(err){
+    alert('Copy failed. You can manually select the link.');
+  }
+}
+
+function loadGame(data){
+  state.currentAnswer = data.l1;
+  state.optionMap.clear();
+  state.optionsNode = document.getElementById('options');
+  state.resultNode = document.getElementById('result');
+  state.afterPlayNode = document.getElementById('afterPlayActions');
+
+  go('playScreen');
+
+  const opts = shuffle([
+    { t: data.t1, type: 'truth' },
+    { t: data.t2, type: 'truth' },
+    { t: data.l1, type: 'lie' }
+  ]);
+
+  state.optionsNode.innerHTML = '';
+  state.resultNode.innerHTML = '';
+  state.afterPlayNode.classList.add('hidden');
+
+  opts.forEach((o, idx) => {
+    const el = document.createElement('div');
+    el.className = 'option';
+    el.dataset.type = o.type;
+    el.dataset.index = String(idx);
+    el.innerText = o.t;
+
+    state.optionMap.set(el, o);
+
+    el.onclick = () => {
+      const item = state.optionMap.get(el);
+      if (item.type === 'lie') {
+        el.classList.add('correct');
+        state.resultNode.innerHTML = `<div class="badge good">Correct 🎉</div><div class="small" style="margin-top:10px;">You found the lie. Tap any option again if you want to keep exploring.</div>`;
+        state.afterPlayNode.classList.remove('hidden');
+      } else {
+        el.classList.add('wrong');
+        state.resultNode.innerHTML = `<div class="badge bad">Wrong ❌</div><div class="small" style="margin-top:10px;">That one is a truth. Try another one.</div>`;
+      }
+    };
+
+    state.optionsNode.appendChild(el);
+  });
+}
+
+function backToCreate(){
+  document.getElementById('shareBox').classList.remove('hidden');
+  go('createScreen');
+}
+
+function playAgain(){
+  const url = new URL(location.href);
+  url.hash = '';
+  location.href = url.toString();
+}
+
+function shuffle(a){
+  return a.sort(() => Math.random() - 0.5);
+}
+
+(function init(){
+  const hash = location.hash;
+  if(hash.includes('data=')){
+    try{
+      const data = decode(hash.split('data=')[1]);
+      loadGame(data);
+    }catch(e){
+      go('createScreen');
+    }
+  }else{
+    go('createScreen');
+  }
+})();
+</script>
+
+</body>
+</html>
