@@ -27,6 +27,10 @@
   font-family:Inter,system-ui,sans-serif;
 }
 
+html {
+  overflow-x:hidden;
+}
+
 body{
   min-height:100vh;
   overflow-y:auto;
@@ -36,7 +40,7 @@ body{
 }
 
 .bg-glow{
-  position:absolute;
+  position:fixed;
   width:600px;
   height:600px;
   background: radial-gradient(circle, rgba(124,58,237,0.25), transparent 60%);
@@ -47,7 +51,7 @@ body{
 }
 
 .bg-glow2{
-  position:absolute;
+  position:fixed;
   width:500px;
   height:500px;
   background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 60%);
@@ -263,7 +267,7 @@ button:active{ transform:translateY(0); opacity:.92; }
 
       <div class="divider"></div>
       <button class="primary" onclick="goToCreate()">Create Your Own Challenge</button>
-      <button class="secondary" onclick="playAgain()">Play Another</button>
+      <!-- <button class="secondary" onclick="playAgain()">Play Another</button> -->
 
       <div class="footer">No login • Instant share • WhatsApp ready</div>
     </div>
@@ -281,7 +285,7 @@ const state = {
 };
 
 function goToCreate(){
-  location.href = 'create.html';
+  location.href = 'index.html';
 }
 
 function playAgain(){
